@@ -2,14 +2,15 @@ let raceEnded: boolean = false
 Sensors.SetLightLevel()
 radio.setGroup(94)
 let start:number = 0
-let end:number = 1
+let end:number = 0
 let isStarted:boolean = false
 const goalCompleted = (receivedNumber: number) => {
-    if (receivedNumber === 1) {
+    if (receivedNumber === 1 && !isStarted) {
         start = control.millis()
         isStarted = true
-        basic.showString("s")
-        music.play(music.tonePlayable(Note.C, music.beat(BeatFraction.Whole)), music.PlaybackMode.UntilDone)
+        basic.showString("s",0)
+        music.playTone(Note.C, 500);
+        basic.clearScreen()
     }
 }
 radio.onReceivedNumber(goalCompleted)
@@ -21,9 +22,9 @@ Sensors.OnLightDrop(function() {
     if(isStarted){
         end = control.millis()
         let finalTime:number = end - start
-        finalTime = finalTime * 100
+        finalTime = finalTime/10
         Math.round(finalTime)
-        finalTime = finalTime / 100
+        finalTime = finalTime/100
         console.log(finalTime)
         radio.sendNumber(finalTime)
         basic.showNumber(finalTime)
