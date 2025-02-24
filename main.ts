@@ -39,7 +39,11 @@ function reset() {
 }
 
 radio.onReceivedNumber(goalCompleted)
-input.onButtonPressed(Button.B, reset)
+input.onButtonPressed(Button.B, function (){
+    reset()
+    radio.sendNumber(3)
+    basic.showString("r")
+})
 
 Sensors.OnLightDrop(function() {
     if(isStarted && !raceEnded){
@@ -50,7 +54,7 @@ Sensors.OnLightDrop(function() {
         Math.round(finalTime)
         finalTime = finalTime/100
         console.log(finalTime)
-        radio.sendNumber(finalTime)
+        radio.sendValue("finaltime", finalTime)
         basic.showNumber(finalTime)
         music.playTone(Note.C, 500)
     }
